@@ -1,16 +1,20 @@
+// Set the date we're counting down to
+var countDownDate = new Date("Sep 23, 2019 23:59:59").getTime();
+
 function getTimeRemaining(endtime) {
-  var t = Date.parse(endtime) - Date.parse(new Date());
-  var seconds = Math.floor((t / 1000) % 60);
-  var minutes = Math.floor((t / 1000 / 60) % 60);
-  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-  var days = Math.floor(t / (1000 * 60 * 60 * 24));
-  return {
-    'total': t,
-    'days': days,
-    'hours': hours,
-    'minutes': minutes,
-    'seconds': seconds
-  };
+ var now = new Date().getTime();
+ var distance = countDownDate - now;
+ var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+ var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+ var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+ var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+ return {
+  'total': distance,
+  'days': days,
+  'hours': hours,
+  'minutes': minutes,
+  'seconds': seconds
+};
 }
 
 function initializeClock(id, endtime) {
@@ -21,15 +25,16 @@ function initializeClock(id, endtime) {
   var secondsSpan = clock.querySelector('.seconds');
 
   function updateClock() {
-    var t = getTimeRemaining(endtime);
+    var distance = getTimeRemaining(endtime);
 
-    daysSpan.innerHTML = t.days;
-    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+    daysSpan.innerHTML = distance.days;
+    hoursSpan.innerHTML = ('0' + distance.hours).slice(-2);
+    minutesSpan.innerHTML = ('0' + distance.minutes).slice(-2);
+    secondsSpan.innerHTML = ('0' + distance.seconds).slice(-2);
 
-    if (t.total <= 0) {
+    if (distance.total < 0) {
       clearInterval(timeinterval);
+      document.getElementById("clockdiv").innerHTML = "EXPIRED";
     }
   }
 
@@ -37,5 +42,24 @@ function initializeClock(id, endtime) {
   var timeinterval = setInterval(updateClock, 1000);
 }
 
-var deadline = new Date(Date.parse(new Date()) + 30 * 24 * 60 * 60 * 1000);
-initializeClock('clockdiv', deadline);
+var deadline = new Date;
+initializeClock('clockdiv');
+
+///////////////
+
+// var x = setInterval(function() {
+//   var now = new Date().getTime();
+//   var distance = countDownDate - now;
+//   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//   var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+//   document.getElementById("clockdiv").innerHTML = days + "d " + hours + "h "
+//   + minutes + "m " + seconds + "s ";
+
+//   if (distance < 0) {
+//     clearInterval(x);
+//     document.getElementById("clockdiv").innerHTML = "EXPIRED";
+//   }
+// }, 1000);
