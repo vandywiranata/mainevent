@@ -1,5 +1,5 @@
 // Set the date we're counting down to
-var countDownDate = new Date("Sep 23, 2019 23:59:59").getTime();
+var countDownDate = new Date("Sep 30, 2019 23:59:59").getTime();
 
 function getTimeRemaining(endtime) {
  var now = new Date().getTime();
